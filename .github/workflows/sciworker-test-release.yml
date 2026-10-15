@@ -21,7 +21,7 @@ jobs:
           root.mkdir()
           with zipfile.ZipFile('artifact.zip') as archive:
               names = archive.namelist()
-              for filename in ('SciWorker-Setup-0.2.0-beta.4-x64.exe', 'SHA256SUMS.txt'):
+              for filename in ('SciWorker-Setup-8b45b431-x64.exe', 'SHA256SUMS.txt'):
                   matches = [name for name in names if pathlib.PurePosixPath(name).name == filename]
                   if len(matches) != 1:
                       raise SystemExit(f'Expected exactly one {filename}')
@@ -32,7 +32,7 @@ jobs:
           checksums = raw.decode('utf-16' if raw.startswith((b'\xff\xfe', b'\xfe\xff')) else 'utf-8-sig')
           expected, filename = checksums.strip().split(maxsplit=1)
           filename = filename.lstrip('*')
-          if filename != 'SciWorker-Setup-0.2.0-beta.4-x64.exe':
+          if filename != 'SciWorker-Setup-8b45b431-x64.exe':
               raise SystemExit('Unexpected checksum filename')
           with (root / filename).open('rb') as handle:
               actual = hashlib.file_digest(handle, 'sha256').hexdigest()
@@ -53,7 +53,7 @@ jobs:
 
           构建与打包检查通过；真实 Windows 安装、启动及业务验收仍待测试。本版本尚未配置 Authenticode 签名。
 
-          下载 SciWorker-Setup-0.2.0-beta.4-x64.exe 安装。SHA256SUMS.txt 可用于验证下载完整性。
+          下载 SciWorker-Setup-8b45b431-x64.exe 安装。SHA256SUMS.txt 可用于验证下载完整性。
           EOF
           gh release create sciworker-test-20261015-8b45b431 --draft --prerelease --title "SciWorker Windows 测试版 · 2026-10-15 · 8b45b431" --notes-file notes.md
           gh release upload sciworker-test-20261015-8b45b431 release/*
